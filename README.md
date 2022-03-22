@@ -13,6 +13,17 @@ You are a junior data scientist on the Zillow data science team and recieve the 
 
 
 
+   - Construct an ML Regression model that predict propery tax assessed values ('taxvaluedollarcnt') of Single Family Properties using attributes of the properties.
+
+   - Find the key drivers of property value for single family properties. Some questions that come to mind are: Why do some properties have a much higher value than others when they are located so close to each other? Why are some properties valued so differently from others when they have nearly the same physical attributes but only differ in location? Is having 1 bathroom worse than having 2 bedrooms?
+
+   - Deliver a report that the data science team can read through and replicate, understand what steps were taken, why and what the outcome was.
+
+   - Make recommendations on what works or doesn't work in prediction these homes' values.
+
+
+
+
 Project Description
 -------------------
 
