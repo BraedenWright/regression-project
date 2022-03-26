@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
+import sklearn.linear_model
+import sklearn.feature_selection
+import sklearn.preprocessing
 
 
 # Functions I've used to explore data
@@ -115,9 +117,50 @@ def regression_metrics(residual, baseline_residual, df):
     print(f'Model RMSE --> {RMSE:.1f}')
     print(f'Baseline RMSE --> {Baseline_RMSE:.1f}')
 
+    
+    
+def plot_coef_heatmap(x_train, y_train):
+    '''
+    Takes in a dataframe and gives a heatmap of the feature coefficients
+    '''
+    
+    logit = LogisticRegression(random_state=1313)
 
+    logit.fit(x_train, y_train)
+
+    features = x_train.columns.tolist()
+    
+    weights = logit.coef_.flatten()
+    
+    visualize = pd.DataFrame(weights, features).reset_index().rename(columns={'index':'feature', 
+                                                                          0: 'weights'})
+
+    # Apply coefficients to a heatmap
+    plt.figure()
+    sns.heatmap(visualize)
+    
+    plt.show()
     
     
+    
+def rfe_feature_rankings(x_scaled, x, y, k):
+    '''
+    Takes in the predictors, the target, and the number of features to select,
+    and it should return a database of the features ranked by importance
+    '''
+    
+    # Make it
+    lm = sklearn.linear_model.LinearRegression()
+    rfe = sklearn.feature_selection.RFE(lm, n_features_to_select=k)
+
+    # Fit it
+    rfe.fit(x_scaled, y)
+    
+    var_ranks = rfe.ranking_
+    var_names = x.columns.tolist()
+    ranks = pd.DataFrame({'Var': var_names, 'Rank': var_ranks})
+    ranks = ranks.sort_values(by="Rank", ascending=True)
+    return ranks
     
 # *Work in progress*
 

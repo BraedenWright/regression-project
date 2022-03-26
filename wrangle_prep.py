@@ -5,6 +5,9 @@ import seaborn as sns
 import os
 
 from sklearn.model_selection import train_test_split
+import sklearn.linear_model
+import sklearn.feature_selection
+import sklearn.preprocessing
 
 from env import user, password, host
 import warnings
@@ -27,7 +30,7 @@ def wrangle_zillow():
     url = f"mysql+pymysql://{user}:{password}@{host}/zillow"
 
     query = '''
-        SELECT bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, yearbuilt, taxamount, fips
+        SELECT bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, yearbuilt, fips
         FROM properties_2017
         LEFT JOIN propertylandusetype USING(propertylandusetypeid)
         WHERE propertylandusedesc IN ('Single Family Residential', 'Inferred Single Family Residential')
@@ -49,10 +52,15 @@ def wrangle_zillow():
     # Change the dtype of 'year_built' and 'fips'
     # First as int to get rid of '.0'
     df.year_built = df.year_built.astype(int)
+    df.fips = df.fips.astype(int)
     
     # Then as object for categorical sorting
     df.year_built = df.year_built.astype(object)
     df.fips = df.fips.astype(object)
+    
+    # Remove Outliers
+    df = df[df.tax_value < 847733.0]
+    df = df[df.sqr_feet < 50000.0]
 
     # Download cleaned data to a .csv
     df.to_csv(filename, index=False)
@@ -109,73 +117,4 @@ def scale_data(train, validate, test, scaler, return_scaler=False):
     
     
     
-    
-def wrangle_grades():
-    """
-    (Given by Madeleine Capper)
-    Read student_grades csv file into a pandas DataFrame,
-    drop student_id column, replace whitespaces with NaN values,
-    drop any rows with Null values, convert all columns to int64,
-    return cleaned student grades DataFrame.
-    """
-    # Acquire data from csv file.
-    grades = pd.read_csv("student_grades.csv")
-    # Replace white space values with NaN values.
-    grades = grades.replace(r"^\s*$", np.nan, regex=True)
-    # Drop all rows with NaN values.
-    df = grades.dropna()
-    # Convert all columns to int64 data types.
-    df = df.astype("int")
-    return df
 
-
-
-
-def get_telco_data():
-
-    filename = 'telco.csv'
-    
-    if os.path.exists(filename):
-        print('Reading from csv file...')
-        return pd.read_csv(filename)
-
-    database = 'telco_churn'
-    url = f'mysql+pymysql://{user}:{password}@{host}/{database}'
-     
-    query = '''
-            SELECT * 
-            FROM customers
-            JOIN contract_types USING(contract_type_id)
-            JOIN internet_service_types USING(internet_service_type_id)
-            JOIN payment_types USING(payment_type_id)
-            '''
-     
-    df = pd.read_sql(query, url)
-    df.to_csv(filename, index=False)
-
-
-    print('Pulling from SQL...')
-    return df
-
-
-
-def prep_telco(df):
-    '''
-    Takes in the telco df and cleans the dataframe up for use. Also changes total_charges from type(obj) to type(float) and removes any accounts with a tenure of 0 to keep information relevant
-    '''
-    
-    df = df.drop(columns=['payment_type_id', 'internet_service_type_id', 'contract_type_id'])
-    df.total_charges = df.total_charges.replace(' ', 0).astype(float)
-    df = df[df.tenure != 0]
-
-    cat_columns = ['gender', 'partner', 'dependents', 'phone_service', 'multiple_lines', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies', 'paperless_billing', 'churn', 'contract_type', 'internet_service_type', 'payment_type']
-
-    for col in cat_columns:
-        telco_dummy = pd.get_dummies(df[col],
-                                     prefix=df[col].name,
-                                     dummy_na=False,
-                                     drop_first = True)
-        df = pd.concat([df, telco_dummy], axis=1)
-        df = df.drop(columns=[col])
-    
-    return df
