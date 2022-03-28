@@ -8,11 +8,12 @@ import sklearn.feature_selection
 import sklearn.preprocessing
 
 
+
 # Functions I've used to explore data
 
 
 
-def plot_categorical_and_continuous_vars(cat_var, cont_var, df):
+def plot_categorical_and_continuous_vars(x, y, df):
     '''
     This function accepts your dataframe and the name of the columns that hold 
     the continuous and categorical features and outputs 3 different plots 
@@ -20,32 +21,32 @@ def plot_categorical_and_continuous_vars(cat_var, cont_var, df):
     '''
     
     # Title
-    plt.suptitle(f'{cont_var} by {cat_var}')
+    plt.suptitle(f'{x} by {y}')
                  
     # Lineplot
-    sns.lineplot(x=cat_var, y=cont_var, data=df)
-    plt.xlabel(cat_var)
-    plt.ylabel(cont_var)
+    sns.lineplot(x, y, data=df)
+    plt.xlabel(x)
+    plt.ylabel(y)
     
     # Swarm Plot
-    sns.catplot(x=cat_var, y=cont_var, data=df, kind='swarm', palette='Greens')
-    plt.xlabel(cat_var)
-    plt.ylabel(cont_var)
+    sns.catplot(x, y, data=df, kind='swarm', palette='Greens')
+    plt.xlabel(x)
+    plt.ylabel(y)
     
     # Box Plot
-    sns.catplot(x=cat_var, y=cont_var, data=df, kind='box', palette='Blues')
-    plt.xlabel(cat_var)
-    plt.ylabel(cont_var)
+    sns.catplot(x, y, data=df, kind='box', palette='Blues')
+    plt.xlabel(x)
+    plt.ylabel(y)
     
     # Bar Plot
-    sns.catplot(x=cat_var, y=cont_var, data=df, kind='bar', palette='Purples')
-    plt.xlabel(cat_var)
-    plt.ylabel(cont_var)
+    sns.catplot(x, y, data=df, kind='bar', palette='Purples')
+    plt.xlabel(x)
+    plt.ylabel(y)
     
     # Scatter plot with regression line
-    sns.lmplot(x=cat_var, y=cont_var, data=df)
-    plt.xlabel(cat_var)
-    plt.ylabel(cont_var)
+    sns.lmplot(x, y, data=df)
+    plt.xlabel(x)
+    plt.ylabel(y)
     
     plt.show()
 
@@ -124,7 +125,7 @@ def plot_coef_heatmap(x_train, y_train):
     Takes in a dataframe and gives a heatmap of the feature coefficients
     '''
     
-    logit = LogisticRegression(random_state=1313)
+    logit = sklearn.linear_model.LogisticRegression(random_state=1313)
 
     logit.fit(x_train, y_train)
 
