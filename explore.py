@@ -120,29 +120,6 @@ def regression_metrics(residual, baseline_residual, df):
 
     
     
-def plot_coef_heatmap(x_train, y_train):
-    '''
-    Takes in a dataframe and gives a heatmap of the feature coefficients
-    '''
-    
-    logit = sklearn.linear_model.LogisticRegression(random_state=1313)
-
-    logit.fit(x_train, y_train)
-
-    features = x_train.columns.tolist()
-    
-    weights = logit.coef_.flatten()
-    
-    visualize = pd.DataFrame(weights, features).reset_index().rename(columns={'index':'feature', 
-                                                                          0: 'weights'})
-
-    # Apply coefficients to a heatmap
-    plt.figure()
-    sns.heatmap(visualize)
-    
-    plt.show()
-    
-    
     
 def rfe_feature_rankings(x_scaled, x, y, k):
     '''
