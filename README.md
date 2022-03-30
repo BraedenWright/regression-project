@@ -1,7 +1,6 @@
 Project Goal
 ---------------------
 
-You are a junior data scientist on the Zillow data science team and recieve the following email in your inbox:
 
     We want to be able to predict the property tax assessed values ('taxvaluedollarcnt') of Single Family Properties that had a transaction during 2017.
 
@@ -13,29 +12,26 @@ You are a junior data scientist on the Zillow data science team and recieve the 
 
 
 
-   - Construct an ML Regression model that predict propery tax assessed values ('taxvaluedollarcnt') of Single Family Properties using attributes of the properties.
+    Find the key drivers of property value for single family properties and construct an ML Regression model that will predict property tax assessed values (tax_value) for those homes.
 
-   - Find the key drivers of property value for single family properties. Some questions that come to mind are: Why do some properties have a much higher value than others when they are located so close to each other? Why are some properties valued so differently from others when they have nearly the same physical attributes but only differ in location? Is having 1 bathroom worse than having 2 bedrooms?
+Initial Questions
 
-   - Deliver a report that the data science team can read through and replicate, understand what steps were taken, why and what the outcome was.
-
-   - Make recommendations on what works or doesn't work in prediction these homes' values.
-
-
+    Does more square footage have a linear relation to tax value, as I suspect it to?
+    Would the year the house was built positively or negatively affect tax value?
+    Will the geographical location(fips) be useful, or does it skew the data?
 
 
-Project Description
--------------------
-
-*Work In Progress*
 
 
 Initial Questions
 ---------------------
 
 
-*Work In Progress*
-
+    Does more square footage have a linear relation to tax value, as I suspect it to?
+    
+    Would the year the house was built positively or negatively affect tax value?
+    
+    Will the geographical location(fips) be useful, or does it skew the data?
 
 
 
@@ -53,9 +49,5 @@ Data Dictionary
 51 	'taxvaluedollarcnt'         	The total tax assessed value of the parcel
 54 	'taxamount' 	                The total property tax assessed for that asses...
 
-
-Dataframes
-
-*Work In Progress*
 
 
